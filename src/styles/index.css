@@ -1,0 +1,19 @@
+body
+{
+	cursor:	url("../images/arrow.png"), default
+}
+
+div#pnlLeft
+{
+	border-right: 2px solid red;
+	height: 100%;
+	width:	15%;
+}
+
+div#pnlRight
+{
+	border-left: 2px solid red;
+	height: 100%;
+	width:	85%;
+}
+
