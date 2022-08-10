@@ -1,100 +1,14 @@
 import React from 'react';
-import './styles/Calendar.css';
+import Header from './Header';
+
+import './Calendar.css';
+
+const LONG_DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+const SHORT_DAYS = ["Su", "M", "Tu", "W", "Th", "F", "Sa"];
 
 const LONG_MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 const SHORT_MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
 
-class CurrentMonthHeader extends React.Component {
-	constructor(params) {
-		super(params);
-
-		this.state = {
-			month: this.props.month,
-			setCurrentDate: this.props.setCurrentDate,
-			year: this.props.year
-		};
-	}
-
-	monthDownClick(event) {
-		event.preventDefault();
-
-		this.state.setCurrentDate(this.state.month - 1, undefined, this.state.year);
-	}
-
-	monthUpClick(event) {
-		event.preventDefault();
-
-		this.state.setCurrentDate(this.state.month + 1, undefined, this.state.year);
-	}
-
-	render() {
-		return (<th id="thNow">
-			<span className="link" id="thNow_month">
-				{LONG_MONTHS[this.state.month]}
-			</span>
-			<span className="link scrollArrow">
-				<img alt="Scroll" src="images//UpDownArrow.png" useMap="#month_scrollmap" />
-				<map name="month_scrollmap">
-					<area alt="up-arrow" coords="0,0,16,7" href="#" onClick={(event) => this.monthUpClick(event)} shape="rect" />
-					<area alt="down-arrow" coords="0,8,16,16" href="#" onClick={(event) => this.monthDownClick(event)} shape="rect" />
-				</map>
-			</span>, <span className="link" id="thNow_year">{this.state.year}</span>
-			<span className="link scrollArrow">
-				<img alt="Scroll" src="images//UpDownArrow.png" useMap="#year_scrollmap" />
-				<map name="year_scrollmap">
-					<area alt="up-arrow" coords="0,0,16,7" href="#" onClick={(event) => this.yearUpClick(event)} shape="rect" />
-					<area alt="down-arrow" coords="0,8,16,16" href="#" onClick={(event) => this.yearDownClick(event)} shape="rect" />
-				</map>
-			</span>
-		</th>)
-	}
-
-	yearDownClick(event) {
-		event.preventDefault();
-
-		this.state.setCurrentDate(this.state.month, undefined, this.state.year - 1);
-	}
-
-	yearUpClick(event) {
-		event.preventDefault();
-
-		this.state.setCurrentDate(this.state.month, undefined, this.state.year + 1);
-	}
-}
-
-class Header extends React.Component {
-	constructor(params) {
-		super(params);
-
-		this.state = {
-			month: this.props.month,
-			setCurrentDate: this.props.setCurrentDate,
-			year: this.props.year
-		};
-	}
-
-	render() {
-		return (
-			<tr>
-				<PreviousMonthHeader
-					month={this.state.month}
-					setCurrentDate={this.state.setCurrentDate}
-					year={this.state.year}
-				/>
-				<CurrentMonthHeader
-					month={this.state.month}
-					setCurrentDate={this.state.setCurrentDate}
-					year={this.state.year}
-				/>
-				<NextMonthHeader
-					month={this.state.month}
-					setCurrentDate={this.state.setCurrentDate}
-					year={this.state.year}
-				/>
-			</tr>
-		)
-	}
-}
 
 class InnerTable extends React.Component {
 	constructor(params) {
@@ -185,55 +99,15 @@ class MonthWeek extends React.Component {
 	}
 }
 
-class NextMonthHeader extends React.Component {
-	constructor(params) {
-		super(params);
-
-		this.state = {
-			month: this.props.month, 
-			setCurrentDate: this.props.setCurrentDate, 
-			year: this.props.year
-		};
-	}
-
-	funcNextMonthClick(event) {
-		this.state.setCurrentDate(this.state.month + 1, undefined, this.state.year);
-	}
-
-	render() {
-		return (<th id="thNextMonth" onClick={(event) => this.funcNextMonthClick(event)}>&lt;&lt;</th>)
-	}
-}
-
-class PreviousMonthHeader extends React.Component {
-	constructor(params) {
-		super(params);
-
-		this.state = {
-			month: this.props.month
-			, setCurrentDate: this.props.setCurrentDate
-			, year: this.props.year
-		};
-	}
-
-	funcPreVMonthClick(event) {
-		this.state.setCurrentDate(this.state.month - 1, undefined, this.state.year);
-	}
-
-	render() {
-		return (<th id="thPreviousMonth" onClick={(event) => this.funcPreVMonthClick(event)}>&gt;&gt;</th>)
-	}
-}
-
 class Calendar extends React.Component {
 	constructor(params) {
 		super(params);
 
 		var curDate = new Date();
 
-		this.state = { 
+		this.state = {
 			currentDate: curDate
-		 };
+		};
 	}
 
 	getFirstDayOfMonth() {
@@ -339,3 +213,4 @@ class Calendar extends React.Component {
 }
 
 export default Calendar;
+export { LONG_DAYS, SHORT_DAYS, LONG_MONTHS, SHORT_MONTHS };
