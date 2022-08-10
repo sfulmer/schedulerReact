@@ -1,8 +1,12 @@
 import React from 'react';
+
 import './styles/Calendar.css';
+import UpDownArrow from './images/UpDownArrow.png';
 
 const LONG_MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 const SHORT_MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
+const LONG_DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+const SHORT_DAYS = ["Su", "M", "Tu", "W", "Th", "F", "Sa"];
 
 class CurrentMonthHeader extends React.Component {
 	constructor(params) {
@@ -33,14 +37,14 @@ class CurrentMonthHeader extends React.Component {
 				{LONG_MONTHS[this.state.month]}
 			</span>
 			<span className="link scrollArrow">
-				<img alt="Scroll" src="images//UpDownArrow.png" useMap="#month_scrollmap" />
+				<img alt="Scroll" src={UpDownArrow} useMap="#month_scrollmap" />
 				<map name="month_scrollmap">
 					<area alt="up-arrow" coords="0,0,16,7" href="#" onClick={(event) => this.monthUpClick(event)} shape="rect" />
 					<area alt="down-arrow" coords="0,8,16,16" href="#" onClick={(event) => this.monthDownClick(event)} shape="rect" />
 				</map>
 			</span>, <span className="link" id="thNow_year">{this.state.year}</span>
 			<span className="link scrollArrow">
-				<img alt="Scroll" src="images//UpDownArrow.png" useMap="#year_scrollmap" />
+				<img alt="Scroll" src={UpDownArrow} useMap="#year_scrollmap" />
 				<map name="year_scrollmap">
 					<area alt="up-arrow" coords="0,0,16,7" href="#" onClick={(event) => this.yearUpClick(event)} shape="rect" />
 					<area alt="down-arrow" coords="0,8,16,16" href="#" onClick={(event) => this.yearDownClick(event)} shape="rect" />
@@ -100,9 +104,6 @@ class InnerTable extends React.Component {
 	constructor(params) {
 		super(params);
 
-		this.longDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-		this.shortDays = ["Su", "M", "Tu", "W", "Th", "F", "Sa"];
-
 		this.state = { weeksStartEnd: this.props.weeksStartEnd };
 
 	}
@@ -112,7 +113,7 @@ class InnerTable extends React.Component {
 			<table id="inner">
 				<thead>
 					<tr>
-						{Array(7).map((i, n) => <th key={i + n} style="text-decoration: underline;">{this.shortDays[i]}</th>)}
+						{Array(7).map((i, n) => <th key={i + n} style="text-decoration: underline;">{SHORT_DAYS[i]}</th>)}
 					</tr>
 				</thead>
 
@@ -210,9 +211,9 @@ class PreviousMonthHeader extends React.Component {
 		super(params);
 
 		this.state = {
-			month: this.props.month
-			, setCurrentDate: this.props.setCurrentDate
-			, year: this.props.year
+			month: this.props.month, 
+			setCurrentDate: this.props.setCurrentDate,
+			 year: this.props.year
 		};
 	}
 
