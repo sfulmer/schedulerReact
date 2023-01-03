@@ -1,19 +1,39 @@
-body
-{
-	cursor:	url("../images/arrow.png"), default
+body {
+	cursor: url("../images/arrow.png"), default
 }
 
-div#pnlLeft
-{
+div#pnlLeft {
 	border-right: 2px solid red;
 	height: 100%;
-	width:	15%;
+	width: 15%;
 }
 
-div#pnlRight
-{
+div#pnlRight {
 	border-left: 2px solid red;
 	height: 100%;
-	width:	85%;
+	width: 85%;
 }
 
+:root {
+	color-scheme: normal;
+}
+
+@media (prefers-color-scheme: light) {
+
+	html,
+	body {
+		color-scheme: light;
+		background-color: #ddd;
+		color: #111;
+	}
+}
+
+@media (prefers-color-scheme: dark) {
+
+	html,
+	body {
+		color-scheme: dark;
+		background-color: #111;
+		color: #ddd;
+	}
+}

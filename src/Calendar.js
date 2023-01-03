@@ -8,84 +8,77 @@ const SHORT_MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "S
 const LONG_DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const SHORT_DAYS = ["Su", "M", "Tu", "W", "Th", "F", "Sa"];
 
-class Calendar extends React.Component
-{
-	constructor(params)
-    {
-		super(params);
+class Calendar extends React.Component {
+    constructor(params) {
+        super(params);
 
-		var curDate = new Date();
+        var curDate = new Date();
 
-		this.state =    {   currentDate:    curDate
-                        ,   weeksStartEnd:  []
-                        };
-	}
-
-    getCurrentDate()
-    {
-        return(this.state.currentDate);
+        this.state = {
+            currentDate: curDate
+            , weeksStartEnd: []
+        };
     }
 
-	getFirstDayOfMonth()
-    {
+    getCurrentDate() {
+        return (this.state.currentDate);
+    }
+
+    getFirstDayOfMonth() {
         const dtCurrent = this.getCurrentDate();
-		var dtFirstDay = new Date();
-		dtFirstDay.setMonth(dtCurrent.getMonth());
-		dtFirstDay.setFullYear(dtCurrent.getFullYear());
-		dtFirstDay.setDate(1);
+        var dtFirstDay = new Date();
+        dtFirstDay.setMonth(dtCurrent.getMonth());
+        dtFirstDay.setFullYear(dtCurrent.getFullYear());
+        dtFirstDay.setDate(1);
 
-		var iFirstDay = dtFirstDay.getUTCDay();
+        var iFirstDay = dtFirstDay.getUTCDay();
 
-		return(iFirstDay);
-	}
+        return (iFirstDay);
+    }
 
-	getLastDateOfMonth()
-    {
+    getLastDateOfMonth() {
         const dtCurrent = this.getCurrentDate();
-		var dtLastDay = new Date();
-		dtLastDay.setMonth(dtCurrent.getMonth() + 1);
-		dtLastDay.setFullYear(dtCurrent.getFullYear());
-		dtLastDay.setDate(0);
+        var dtLastDay = new Date();
+        dtLastDay.setMonth(dtCurrent.getMonth() + 1);
+        dtLastDay.setFullYear(dtCurrent.getFullYear());
+        dtLastDay.setDate(0);
 
-		var iLastDate = dtLastDay.getDate();
+        var iLastDate = dtLastDay.getDate();
 
-		return(iLastDate);
-	}
+        return (iLastDate);
+    }
 
-	getNumberOfWeeks()
-    {
-		const firstDayOfMonth = this.getFirstDayOfMonth();
-		const numDaysInMonth = this.getLastDateOfMonth();
-		var numWeeks = 0;
+    getNumberOfWeeks() {
+        const firstDayOfMonth = this.getFirstDayOfMonth();
+        const numDaysInMonth = this.getLastDateOfMonth();
+        var numWeeks = 0;
 
-		if(numDaysInMonth == 28)
-			if(firstDayOfMonth > 0)
+        if (numDaysInMonth == 28)
+            if (firstDayOfMonth > 0)
                 numWeeks = 5;
             else
                 numWeeks = 4;
-		else if(numDaysInMonth == 29)
-            if(firstDayOfMonth > 6)
-			    numWeeks = 6;
+        else if (numDaysInMonth == 29)
+            if (firstDayOfMonth > 6)
+                numWeeks = 6;
             else
                 numWeeks = 5;
-		else if(numDaysInMonth == 30)
-            if(firstDayOfMonth > 6)
-			    numWeeks = 6;
+        else if (numDaysInMonth == 30)
+            if (firstDayOfMonth > 6)
+                numWeeks = 6;
             else
                 numWeeks = 5;
-		else // Days == 31
-            if(firstDayOfMonth > 5)
-			    numWeeks = 6;
+        else // Days == 31
+            if (firstDayOfMonth > 5)
+                numWeeks = 6;
             else
                 numWeeks = 5;
 
-		return(numWeeks);
-	}
+        return (numWeeks);
+    }
 
-    getWeekData()
-    {
-        if(this.state.weeksStartEnd.length <= 0)
-            {
+    getWeekData() {
+        if (this.state.weeksStartEnd.length <= 0) {
             const iFirstDay = -this.getFirstDayOfMonth();
             const iLastDate = this.getLastDateOfMonth();
             var iLoop = iFirstDay;
@@ -93,31 +86,30 @@ class Calendar extends React.Component
             this.state.weeksStartEnd = [];
 
             {
-            const iSunday = iFirstDay + 1;
-            const iSaturday = 7 + iFirstDay;
-        
-            this.state.weeksStartEnd.push({ SundayDate: iSunday, SaturdayDate: iLoop = iSaturday });
-            }
-        
-            for(var iWeekLength = this.getNumberOfWeeks(), iWeekLoop = 1; iWeekLoop < iWeekLength; iWeekLoop++)
-                this.state.weeksStartEnd.push({ SundayDate: iLoop+1, SaturdayDate: iLoop += 7 });
+                const iSunday = iFirstDay + 1;
+                const iSaturday = 7 + iFirstDay;
+
+                this.state.weeksStartEnd.push({ SundayDate: iSunday, SaturdayDate: iLoop = iSaturday });
             }
 
-        return(this.state.weeksStartEnd);
+            for (var iWeekLength = this.getNumberOfWeeks(), iWeekLoop = 1; iWeekLoop < iWeekLength; iWeekLoop++)
+                this.state.weeksStartEnd.push({ SundayDate: iLoop + 1, SaturdayDate: iLoop += 7 });
+        }
+
+        return (this.state.weeksStartEnd);
     }
 
-    render()
-    {
+    render() {
         const this_ = this;
-        
-        return(
+
+        return (
             <div>
                 <table>
-                    <Header calendarRef = {this_} setCurrentDate={this.setCurrentDate} />
+                    <Header calendarRef={this_} setCurrentDate={this.setCurrentDate} />
                     <tbody>
                         <tr>
                             <td colSpan="3">
-                                <InnerTable calendarRef = {this_} />
+                                <InnerTable calendarRef={this_} />
                             </td>
                         </tr>
                     </tbody>
@@ -125,99 +117,91 @@ class Calendar extends React.Component
             </div>);
     }
 
-    setCurrentDate(year, month, day)
-    {
+    setCurrentDate(year, month, day) {
         var dt;
 
-		if(typeof(day) == "undefined")
+        if (typeof (day) == "undefined")
             dt = new Date(this.state.currentDate.getFullYear() + year, this.state.currentDate.getMonth() + month);
         else
             dt = new Date(this.state.currentDate.getFullYear() + year, this.state.currentDate.getMonth() + month, this.state.currentDate.getDate() + day);
 
-        this.setState(  {   currentDate:    dt
-                        ,   weeksStartEnd:  []
-                        });
+        this.setState({
+            currentDate: dt
+            , weeksStartEnd: []
+        });
     }
 }
 
-class CurrentMonthHeader extends React.Component
-{
-	constructor(params)
-    {
-		super(params);
+class CurrentMonthHeader extends React.Component {
+    constructor(params) {
+        super(params);
 
-		this.state =    {   calendarRef:    this.props.calendarRef
-                        ,   setCurrentDate: this.props.setCurrentDate
-		                };
-	}
+        this.state = {
+            calendarRef: this.props.calendarRef
+            , setCurrentDate: this.props.setCurrentDate
+        };
+    }
 
-	monthDownClick(event)
-    {
+    monthDownClick(event) {
         const args = [0, -1];
-		
-        this.state.setCurrentDate.apply(this.state.calendarRef, args);
-	}
 
-	monthUpClick(event)
-    {
+        this.state.setCurrentDate.apply(this.state.calendarRef, args);
+    }
+
+    monthUpClick(event) {
         const args = [0, 1];
 
         this.state.setCurrentDate.apply(this.state.calendarRef, args);
-	}
-
-	render()
-    {
-		return(
-            <th id="thNow">
-			    <span className="link" id="thNow_month">
-				    {LONG_MONTHS[this.state.calendarRef.getCurrentDate().getMonth()]}
-			    </span>
-			    <span className="link scrollArrow">
-				    <img alt="Scroll" src={UpDownArrow} useMap="#month_scrollmap" />
-				    <map name="month_scrollmap">
-					    <area alt="up-arrow" coords="0,0,16,7" href="#" onClick={(event) => this.monthUpClick(event)} shape="rect" />
-					    <area alt="down-arrow" coords="0,8,16,16" href="#" onClick={(event) => this.monthDownClick(event)} shape="rect" />
-				    </map>
-			    </span>, <span className="link" id="thNow_year">{this.state.calendarRef.getCurrentDate().getFullYear()}</span>
-			    <span className="link scrollArrow">
-				    <img alt="Scroll" src={UpDownArrow} useMap="#year_scrollmap" />
-				    <map name="year_scrollmap">
-					    <area alt="up-arrow" coords="0,0,16,7" href="#" onClick={(event) => this.yearUpClick(event)} shape="rect" />
-					    <area alt="down-arrow" coords="0,8,16,16" href="#" onClick={(event) => this.yearDownClick(event)} shape="rect" />
-				    </map>
-			    </span>
-		    </th>);
-	}
-
-	yearDownClick(event)
-    {
-		const args = [-1, 0];
-		
-        this.state.setCurrentDate.apply(this.state.calendarRef, args);
-	}
-
-	yearUpClick(event)
-    {
-        const args = [1, 0];
-		
-        this.state.setCurrentDate.apply(this.state.calendarRef, args);
-	}
-}
-
-class Header extends React.Component
-{
-    constructor(params)
-    {
-        super(params);
-
-        this.state =    {   calendarRef:    this.props.calendarRef
-                        ,   setCurrentDate: this.props.setCurrentDate
-                        };
     }
 
-    render()
-    {
-        return(
+    render() {
+        return (
+            <th id="thNow">
+                <span className="link" id="thNow_month">
+                    {LONG_MONTHS[this.state.calendarRef.getCurrentDate().getMonth()]}
+                </span>
+                <span className="link scrollArrow">
+                    <img alt="Scroll" src={UpDownArrow} useMap="#month_scrollmap" />
+                    <map name="month_scrollmap">
+                        <area alt="up-arrow" coords="0,0,16,7" href="#" onClick={(event) => this.monthUpClick(event)} shape="rect" />
+                        <area alt="down-arrow" coords="0,8,16,16" href="#" onClick={(event) => this.monthDownClick(event)} shape="rect" />
+                    </map>
+                </span>, <span className="link" id="thNow_year">{this.state.calendarRef.getCurrentDate().getFullYear()}</span>
+                <span className="link scrollArrow">
+                    <img alt="Scroll" src={UpDownArrow} useMap="#year_scrollmap" />
+                    <map name="year_scrollmap">
+                        <area alt="up-arrow" coords="0,0,16,7" href="#" onClick={(event) => this.yearUpClick(event)} shape="rect" />
+                        <area alt="down-arrow" coords="0,8,16,16" href="#" onClick={(event) => this.yearDownClick(event)} shape="rect" />
+                    </map>
+                </span>
+            </th>);
+    }
+
+    yearDownClick(event) {
+        const args = [-1, 0];
+
+        this.state.setCurrentDate.apply(this.state.calendarRef, args);
+    }
+
+    yearUpClick(event) {
+        const args = [1, 0];
+
+        this.state.setCurrentDate.apply(this.state.calendarRef, args);
+    }
+}
+
+class Header extends React.Component {
+    constructor(params) {
+        super(params);
+
+        this.state = {
+            calendarRef: this.props.calendarRef
+            , setCurrentDate: this.props.setCurrentDate
+        };
+    }
+
+    render() {
+        return (
             <thead>
                 <tr>
                     <PreviousMonthHeader calendarRef={this.state.calendarRef} setCurrentDate={this.state.setCurrentDate} />
@@ -228,145 +212,130 @@ class Header extends React.Component
     }
 }
 
-class InnerTable extends React.Component
-{
-    constructor(params)
-    {
+class InnerTable extends React.Component {
+    constructor(params) {
         super(params);
 
-		this.state =    {   calendarRef:    this.props.calendarRef  };
+        this.state = { calendarRef: this.props.calendarRef };
     }
 
-    render()
-    {
-        return(
-            <table style={{width: "100%"}}>
+    render() {
+        return (
+            <table style={{ width: "100%" }}>
                 <thead>
                     <tr>
-                        {SHORT_DAYS.map((i, n) => <th key={n.toString()} style={{fontWeight: "bold", textDecoration: "underline"}}>{i}</th>)}
+                        {SHORT_DAYS.map((i, n) => <th key={n.toString()} style={{ fontWeight: "bold", textDecoration: "underline" }}>{i}</th>)}
                     </tr>
                 </thead>
                 <tbody>
                     {this.state.calendarRef.getWeekData().map((i, n) => (
-                            <MonthWeek
-                                key={n}
-                                calendarRef={this.state.calendarRef}
-                                sunday={i.SundayDate}
-                                saturday={i.SaturdayDate}
-                            />
-                        ))}
+                        <MonthWeek
+                            key={n}
+                            calendarRef={this.state.calendarRef}
+                            sunday={i.SundayDate}
+                            saturday={i.SaturdayDate}
+                        />
+                    ))}
                 </tbody>
             </table>
         );
     }
 }
 
-class MonthDate extends React.Component
-{
-    constructor(params)
-    {
+class MonthDate extends React.Component {
+    constructor(params) {
         super(params);
 
-        this.state =    {   date:   this.props.date    };
+        this.state = { date: this.props.date };
     }
 
-    render()
-    {
-		if(this.state.date != null)
-			return(<td style={{textAlign: "center"}}>{this.state.date}</td>);
-		else
-			return(<td style={{textAlign: "center"}}>&nbsp;</td>);
-	}
+    render() {
+        if (this.state.date != null)
+            return (<td style={{ textAlign: "center" }}>{this.state.date}</td>);
+        else
+            return (<td style={{ textAlign: "center" }}>&nbsp;</td>);
+    }
 }
 
-class MonthWeek extends React.Component
-{
-    constructor(params)
-    {
+class MonthWeek extends React.Component {
+    constructor(params) {
         super(params);
 
-        this.state =    {   calendarRef:    this.props.calendarRef
-                        ,   saturday:       this.props.saturday
-                        ,	sunday:         this.props.sunday
-		                };
+        this.state = {
+            calendarRef: this.props.calendarRef
+            , saturday: this.props.saturday
+            , sunday: this.props.sunday
+        };
     }
 
-	getLastDateOfMonth()
-    {
+    getLastDateOfMonth() {
         const currentDate = this.state.calendarRef.getCurrentDate();
-		var dtLastDay = new Date();
-		dtLastDay.setMonth(currentDate.getMonth() + 1);
-		dtLastDay.setFullYear(currentDate.getFullYear());
-		dtLastDay.setDate(0);
+        var dtLastDay = new Date();
+        dtLastDay.setMonth(currentDate.getMonth() + 1);
+        dtLastDay.setFullYear(currentDate.getFullYear());
+        dtLastDay.setDate(0);
 
-		var iLastDate = dtLastDay.getDate();
+        var iLastDate = dtLastDay.getDate();
 
-		return(iLastDate);
-	}
+        return (iLastDate);
+    }
 
-    render()
-    {
+    render() {
         var dates = [];
 
-		for(var iSaturday = this.state.saturday, iLoop = this.state.sunday; iLoop <= iSaturday; iLoop++)
-			if ((iLoop > this.getLastDateOfMonth(this.state.month)) || (iLoop <= 0))
-				dates.push(null);
-			else
-				dates.push(iLoop);
+        for (var iSaturday = this.state.saturday, iLoop = this.state.sunday; iLoop <= iSaturday; iLoop++)
+            if ((iLoop > this.getLastDateOfMonth(this.state.month)) || (iLoop <= 0))
+                dates.push(null);
+            else
+                dates.push(iLoop);
 
-        return(<tr>
-			{dates.map((date, n) => (
+        return (<tr>
+            {dates.map((date, n) => (
                 <MonthDate key="n" date={date} />
             ))}
-		</tr>);
+        </tr>);
     }
 }
 
-class NextMonthHeader extends React.Component
-{
-    constructor(params)
-    {
+class NextMonthHeader extends React.Component {
+    constructor(params) {
         super(params);
 
-        this.state =    {   calendarRef:    this.props.calendarRef
-                        ,   setCurrentDate: this.props.setCurrentDate
-                        };
+        this.state = {
+            calendarRef: this.props.calendarRef
+            , setCurrentDate: this.props.setCurrentDate
+        };
     }
 
-    funcNextMonthClick(event)
-    {
+    funcNextMonthClick(event) {
         const args = [0, 1];
-		
-        this.state.setCurrentDate.apply(this.state.calendarRef, args);
-	}
 
-    render()
-    {
-        return(<th style={{cursor: "pointer"}} onClick={(event) => this.funcNextMonthClick(event)}>&gt;&gt;</th>);
+        this.state.setCurrentDate.apply(this.state.calendarRef, args);
+    }
+
+    render() {
+        return (<th style={{ cursor: "pointer" }} onClick={(event) => this.funcNextMonthClick(event)}>&gt;&gt;</th>);
     }
 }
 
-class PreviousMonthHeader extends React.Component
-{
-    constructor(params)
-    {
+class PreviousMonthHeader extends React.Component {
+    constructor(params) {
         super(params);
 
-        this.state =    {   calendarRef:    this.props.calendarRef
-                        ,   setCurrentDate: this.props.setCurrentDate
-                        };
+        this.state = {
+            calendarRef: this.props.calendarRef
+            , setCurrentDate: this.props.setCurrentDate
+        };
     }
 
-    funcPrevMonthClick(event)
-    {
+    funcPrevMonthClick(event) {
         const args = [0, -1];
-		
-        this.state.setCurrentDate.apply(this.state.calendarRef, args);
-	}
 
-    render()
-    {
-        return(<th style={{cursor: "pointer"}} onClick={(event) => this.funcPrevMonthClick(event)}>&lt;&lt;</th>);
+        this.state.setCurrentDate.apply(this.state.calendarRef, args);
+    }
+
+    render() {
+        return (<th style={{ cursor: "pointer" }} onClick={(event) => this.funcPrevMonthClick(event)}>&lt;&lt;</th>);
     }
 }
 
